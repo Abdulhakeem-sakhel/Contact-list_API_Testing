@@ -1,0 +1,30 @@
+name: mainenv
+values:
+  - key: token
+    value: ""
+    enabled: true
+  - key: base_url
+    value: https://thinking-tester-contact-list.herokuapp.com
+    enabled: true
+  - key: tem_token
+    value: ""
+    enabled: true
+  - key: contactId
+    value: ""
+    enabled: true
+  - key: invalid_token
+    value: ""
+    enabled: true
+  - key: fakeid
+    value: ""
+    enabled: true
+  - key: firstName
+    value: ""
+    enabled: true
+  - key: lastName
+    value: ""
+    enabled: true
+  - key: email
+    value: ""
+    enabled: true
+color: null

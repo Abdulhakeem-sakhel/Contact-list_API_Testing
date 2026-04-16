@@ -3,7 +3,7 @@ url: "{{base_url}}/users/me"
 method: PATCH
 body:
   type: json
-  content: '{"age":20}'
+  content: "{}"
 auth:
   type: bearer
   credentials:
@@ -24,4 +24,4 @@ scripts:
 
       \    pm.expect(jData).to.have.property(\"_id\");})"
     language: text/javascript
-order: 14000
+order: 4000

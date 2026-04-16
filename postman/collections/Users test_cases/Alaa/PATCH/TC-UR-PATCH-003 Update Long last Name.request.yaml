@@ -3,7 +3,7 @@ url: "{{base_url}}/users/me"
 method: PATCH
 body:
   type: json
-  content: "{\r\n \"password\": \"m\"}"
+  content: '{"lastName": "Smith---------------@WQ"}'
 auth:
   type: bearer
   credentials:
@@ -22,6 +22,10 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"message\");})\r\n"
+      \    pm.expect(jData).to.have.property(\"message\");})"
     language: text/javascript
-order: 11000
+  - type: beforeRequest
+    code: pm.environment.set("token",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY");
+    language: text/javascript
+order: 3000

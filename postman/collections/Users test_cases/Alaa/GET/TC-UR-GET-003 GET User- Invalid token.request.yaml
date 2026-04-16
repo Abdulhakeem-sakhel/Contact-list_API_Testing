@@ -2,9 +2,16 @@ $kind: http-request
 url: "{{base_url}}/users/me"
 method: GET
 body:
-  type: text
+  type: json
   content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
 scripts:
+  - type: beforeRequest
+    code: pm.environment.set("token", "invalidToken");
+    language: text/javascript
   - type: afterResponse
     code: "pm.test(\"Status code is 401\", function () {\r
 
@@ -20,4 +27,4 @@ scripts:
 
       \    pm.expect(jData).to.have.property(\"error\");})"
     language: text/javascript
-order: 8000
+order: 3000

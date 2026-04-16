@@ -1,21 +1,23 @@
 $kind: http-request
+name: TC-UR-PATCH-007 Update with wrong DT "first name"
 url: "{{base_url}}/users/me"
-method: GET
+method: PATCH
 body:
   type: json
-  content: ""
+  content: '{"firstName": 122}'
 auth:
   type: bearer
   credentials:
     token: "{{token}}"
 scripts:
-  - type: beforeRequest
-    code: pm.environment.set("token", "invalidToken");
-    language: text/javascript
   - type: afterResponse
-    code: "pm.test(\"Status code is 401\", function () {\r
+    code: "\r
 
-      \    pm.response.to.have.status(401);\r
+      \r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
 
       });\r
 
@@ -25,6 +27,8 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"error\");})"
+      \    pm.expect(jData).to.have.property(\"message\");})\r
+
+      \r\n"
     language: text/javascript
-order: 9000
+order: 7000

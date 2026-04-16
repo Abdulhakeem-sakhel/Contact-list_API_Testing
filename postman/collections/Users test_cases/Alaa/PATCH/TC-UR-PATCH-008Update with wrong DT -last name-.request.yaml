@@ -22,4 +22,4 @@ scripts:
 
       \    pm.expect(jData).to.have.property(\"message\");})\r\n"
     language: text/javascript
-order: 17000
+order: 8000

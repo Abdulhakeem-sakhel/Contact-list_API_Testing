@@ -69,4 +69,4 @@ scripts:
 
       });\r\n"
     language: text/javascript
-order: 1000
+order: 2000

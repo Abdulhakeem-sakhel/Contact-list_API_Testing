@@ -3,23 +3,7 @@ url: "{{base_url}}/contacts/{{contactId}}"
 method: PUT
 body:
   type: json
-  content: "{\r
-
-    \    \"firstName\": \"Abd\",\r
-
-    \    \"lastName\": \"Sakhel\",\r
-
-    \    \"email\": \"{{$randomEmail}}\",\r
-
-    \    \"phone\": \"8005554242\",\r
-
-    \    \"street1\": \"ras al\",\r
-
-    \    \"city\": \"Nablus\",\r
-
-    \    \"country\": \"Palestine\"\r
-
-    }"
+  content: "{{requestBody}}"
 auth:
   type: bearer
   credentials:
@@ -100,12 +84,41 @@ scripts:
 
       \    }\r
 
-      });"
+      });\r
+
+      \r
+
+      \r
+
+      let requestBody = {\r
+
+      \  firstName: \"Abd\",\r
+
+      \  lastName: \"Sakhel\",\r
+
+      \  email: randomEmail,\r
+
+      \  phone: \"8005554242\",\r
+
+      \  street1: \"ras al\",\r
+
+      \  city: \"Nablus\",\r
+
+      \  country: \"Palestine\",\r
+
+      };\r
+
+      \r
+
+      // Save the object as a string so it can be used in the Request Body and
+      Tests\r
+
+      pm.variables.set(\"requestBody\", JSON.stringify(requestBody));"
     language: text/javascript
   - type: afterResponse
-    code: "const requestBody = JSON.parse(pm.request.body.toJSON().raw);\r
+    code: "const sentData = JSON.parse(pm.variables.get(\"requestBody\"));\r
 
-      const responseBody = pm.response.json();\r
+      const receivedUser = pm.response.json();\r
 
       \r
 
@@ -117,14 +130,21 @@ scripts:
 
       \r
 
-      pm.test(\"Verifying the response modified values\", function () {\r
+      pm.test(\"Verify response matches sent body\", function () {\r
 
-      \    for (const property in requestBody) {\r
+      \  pm.expect(receivedUser.firstName).to.eql(sentData.firstName);\r
 
-      \        pm.expect(requestBody[property].toLowerCase()).to.eql(responseBo\
-      dy[property].toLowerCase());\r
+      \  pm.expect(receivedUser.lastName).to.eql(sentData.lastName);\r
 
-      \    }\r
+      \  pm.expect(receivedUser.email.toLowerCase()).to.eql(\r
+
+      \    sentData.email.toLowerCase(),\r
+
+      \  );\r
+
+      \  pm.expect(receivedUser.phone).to.eql(sentData.phone);\r
+
+      \  pm.expect(receivedUser.city).to.eql(sentData.city);\r
 
       });"
     language: text/javascript

@@ -7,13 +7,14 @@ workspace:
 cloudResources:
   collections:
     ..\postman\collections\Contacts test_cases: 53943201-a4a46c0a-b039-405d-9bbf-d7f92ff2d7a7
-    ..\postman\collections\Users: 53959556-2245aac7-63e2-44e6-b0ca-931cb337ac60
+    ..\postman\collections\Users test_cases: 53959556-2245aac7-63e2-44e6-b0ca-931cb337ac60
   environments:
     ..\postman\environments\Contact List Doc Environment.environment.yaml: 53988700-5e275443-e645-4d2e-8140-ae515fee4165
     ..\postman\environments\New Environment.environment.yaml: 53943201-330de6f8-abd7-4c77-8f2a-e9fd7e09ddc2
     ..\postman\environments\contact.environment.yaml: 53943201-df13254b-3532-45d0-830f-aacf55598dd7
     ..\postman\environments\test.environment.yaml: 53943201-fc923506-e957-4666-9155-56b0852ce688
     ..\postman\environments\User Environment.environment.yaml: 53959556-0fb93e47-0fe6-4964-8c1d-f77f2114264e
+    ..\postman\environments\mainenv.environment.yaml: 53943201-df13254b-3532-45d0-830f-aacf55598dd7
 
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:

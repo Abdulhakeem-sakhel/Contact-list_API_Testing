@@ -1,0 +1,45 @@
+$kind: http-request
+url: "{{base_url}}/users"
+method: POST
+body:
+  type: json
+  content: "{}"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);})\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"message\");})\r
+
+      \r
+
+      const rText = pm.response.text();\r
+
+      pm.test(\"Response message should mention ValidatorError and firstName\",
+      function() {\r
+
+      \    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"fir\
+      stName\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is less than 900ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });"
+    language: text/javascript
+order: 4000

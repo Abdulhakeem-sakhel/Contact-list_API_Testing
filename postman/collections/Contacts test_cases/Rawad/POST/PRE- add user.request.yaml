@@ -20,4 +20,4 @@ scripts:
     code: pm.environment.set("token", pm.response.json().token)
     language: text/javascript
 examples: ./.resources/PRE- add user.resources/examples
-order: 4000
+order: 1000
