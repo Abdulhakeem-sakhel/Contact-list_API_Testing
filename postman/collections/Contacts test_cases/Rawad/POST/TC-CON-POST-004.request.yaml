@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{base_url}}/contacts"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"Amir\",\r
+
+    \    \"lastName\": \"Jamal\",\r
+
+    \    \"email\": \"not-an-email\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-POST-004 Scripts:\r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      pm.test(\"Response contains validation error\", function(){\r
+
+      \    const text=pm.response.text();\r
+
+      \    pm.expect(text).to.include(\"email\");\r
+
+      });"
+    language: text/javascript
+order: 4000

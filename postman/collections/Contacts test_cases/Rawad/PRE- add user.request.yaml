@@ -1,0 +1,23 @@
+$kind: http-request
+name: "PRE: add user"
+url: "{{base_url}}/users"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"Test\",\r
+
+    \    \"lastName\": \"User\",\r
+
+    \    \"email\": \"{{$randomEmail}}\",\r
+
+    \    \"password\": \"myPassword\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: pm.environment.set("token", pm.response.json().token)
+    language: text/javascript
+examples: ./.resources/PRE- add user.resources/examples
+order: 4000

@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{base_url}}/contacts?{{contactId}}=000000000000000000"
+method: GET
+queryParams:
+  "{{contactId}}": "000000000000000000"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-GET-005 Scripts:\r
+
+      pm.test(\"Status code is 404\", function () {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });\r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const text=pm.response.text();\r
+
+      \    pm.expect(text.toLowerCase()).to.include(\"not found\");\r
+
+      });"
+    language: text/javascript
+order: 2000

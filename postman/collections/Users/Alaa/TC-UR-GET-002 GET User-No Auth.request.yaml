@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{base_url}}/users/me"
+method: GET
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 401\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"error\");})"
+    language: text/javascript
+order: 8000

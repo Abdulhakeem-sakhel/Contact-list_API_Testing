@@ -1,0 +1,25 @@
+$kind: http-request
+name: TC-UR-PATCH-008Update with wrong DT "last name"
+url: "{{base_url}}/users/me"
+method: PATCH
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"message\");})\r\n"
+    language: text/javascript
+order: 17000

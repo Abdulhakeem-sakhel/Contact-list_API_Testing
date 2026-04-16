@@ -1,0 +1,27 @@
+name: Contact List Doc Environment
+values:
+  - key: contactId
+    value: ""
+    enabled: true
+  - key: firstName
+    value: ""
+    enabled: true
+  - key: lastName
+    value: ""
+    enabled: true
+  - key: email
+    value: ""
+    enabled: true
+  - key: password
+    value: ""
+    enabled: true
+  - key: base_url
+    value: ""
+    enabled: true
+  - key: contactIdIn
+    value: ""
+    enabled: true
+  - key: token
+    value: ""
+    enabled: true
+color: null

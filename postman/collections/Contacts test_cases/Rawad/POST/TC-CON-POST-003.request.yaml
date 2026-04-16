@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{base_url}}/contacts"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"Freddie\",\r
+
+    \    \"lastName\": \"Bridge\"\r
+
+    }"
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-POST-003 Scripts:\r
+
+      pm.test(\"Status code is 401\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jsonData=pm.response.json();\r
+
+      \    pm.expect(jsonData).to.have.property(\"error\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 3000

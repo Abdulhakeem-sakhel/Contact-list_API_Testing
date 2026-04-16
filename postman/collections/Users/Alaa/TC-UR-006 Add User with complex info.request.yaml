@@ -1,0 +1,61 @@
+$kind: http-request
+url: "{{base_url}}/users"
+method: POST
+body:
+  type: json
+  content: '{"firstName": "Test","lastName": " 😍  " ,"email":
+    "{{$randomEmail}}","password": "myPassword" }'
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "var jsonData=pm.response;\r
+
+      pm.environment.set('token', jsonData.token)\r
+
+      \r
+
+      \r
+
+      pm.environment.set(\"firstName\", pm.response.json().firstName);\r
+
+      pm.environment.set(\"lastName\", pm.response.json().lastName);\r
+
+      pm.environment.set(\"email\", pm.response.json().email);\r
+
+      \r
+
+      pm.test(\"response body firstName, lastName and email exists\", function
+      () {\r
+
+      \     const jsonData=pm.response.json();\r
+
+      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\
+      \"));\r
+
+      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\")\
+      );\r
+
+      \    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email\"));\r
+
+      \ });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      pm.test(\"Response contains a user\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"user\");})"
+    language: text/javascript
+order: 6000

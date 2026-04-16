@@ -1,0 +1,30 @@
+$kind: http-request
+url: "{{base_url}}/users/me"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: beforeRequest
+    code: "\r
+
+      pm.environment.set('token',
+      \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmNGM5MDgyYjUyNjAwMT\
+      VkYzBmZWEiLCJpYXQiOjE3NzYyNDE4MDh9.aQquhLZOpQaXm8VDlcAR_nb6E5v8SNicOZRPyS\
+      bzpHI\");"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Response contains a user\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"_id\");})"
+    language: text/javascript
+order: 7000

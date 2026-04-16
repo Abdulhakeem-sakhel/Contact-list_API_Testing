@@ -1,0 +1,32 @@
+$kind: http-request
+url: "{{base_url}}/contacts/{{contactId}}"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-GET-004 Scripts:\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"response _id matches the requested contactId\", function(){\r
+
+      \    const jsonData=pm.response.json();\r
+
+      \    pm.expect(jsonData._id).to.eql(pm.environment.get(\"contactId\"));\r
+
+      });\r
+
+      pm.test(\"Response time is less than 1000ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(1000);\r
+
+      });"
+    language: text/javascript
+order: 1000

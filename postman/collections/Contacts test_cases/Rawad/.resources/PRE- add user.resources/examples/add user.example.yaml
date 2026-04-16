@@ -1,0 +1,24 @@
+$kind: http-example
+request:
+  url: "{{base_url}}/users"
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \    \"firstName\": \"Test\",\r
+
+      \    \"lastName\": \"User\",\r
+
+      \    \"email\": \"test2122@fake.com\",\r
+
+      \    \"password\": \"myPassword\"\r
+
+      }"
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: ""
+order: 1000

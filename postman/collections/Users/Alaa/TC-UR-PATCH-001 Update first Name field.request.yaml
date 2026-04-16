@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{base_url}}/users/me"
+method: PATCH
+body:
+  type: json
+  content: "{\r\n \"firstName\": \"Adam\"}"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "\r
+
+      \r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains a user\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"_id\");})\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: pm.environment.set("token",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY");
+    language: text/javascript
+order: 10000

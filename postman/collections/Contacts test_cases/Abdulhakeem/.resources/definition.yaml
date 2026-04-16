@@ -1,0 +1,6 @@
+$kind: collection
+scripts:
+  - type: http:beforeRequest
+    code: console.log("hello from abdulhakeem Sahkel");
+    language: text/javascript
+order: 2000

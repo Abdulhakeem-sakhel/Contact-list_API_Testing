@@ -1,0 +1,49 @@
+$kind: http-request
+name: "Pre condition ALL: setting auth token"
+url: "{{base_url}}/users"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"{{$randomFirstName}}\",\r
+
+    \    \"lastName\": \"{{$randomLastName}}\",\r
+
+    \    \"email\": \"{{$randomEmail}}\",\r
+
+    \    \"password\": \"{{$randomPassword}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const requestBody = JSON.parse(pm.request.body.toJSON().raw);\r
+
+      const user = pm.response.json().user;\r
+
+      \r
+
+      pm.environment.set('token', pm.response.json().token)\r
+
+      \r
+
+      pm.test(\"Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Verifying the response values match the body values\", function
+      () {\r
+
+      \    pm.expect(user.firstName).to.eql(requestBody.firstName);\r
+
+      \    pm.expect(user.lastName).to.eql(requestBody.lastName);\r
+
+      \    pm.expect(user.email).to.eql(requestBody.email.toLowerCase());\r
+
+      });"
+    language: text/javascript
+order: 1000

@@ -1,0 +1,30 @@
+$kind: http-request
+url: "{{base_url}}/contacts"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-GET-001 Scripts:\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Response is an array\", function(){\r
+
+      \    pm.expect(pm.response.json()).to.be.an(\"array\");\r
+
+      });\r
+
+      pm.test(\"Array contains at least one contact\", function(){\r
+
+      \    pm.expect(pm.response.json().length).to.be.above(0);\r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

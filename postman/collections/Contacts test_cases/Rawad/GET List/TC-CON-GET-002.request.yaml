@@ -1,0 +1,30 @@
+$kind: http-request
+url: "{{base_url}}/contacts"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-GET-002 Scripts:\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"John Doe existts in contact list\", function(){\r
+
+      \    const list = pm.response.json();\r
+
+      \    const found = list.some(c => c.firstName ===
+      pm.environment.get(\"firstName\") && c.lastName ===
+      pm.environment.get(\"lastName\"));\r
+
+      \    pm.expect(found).to.be.true;\r
+
+      });"
+    language: text/javascript
+order: 2000

@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{base_url}}/users/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"email\": \"{{$randomEmail}}\",\r
+
+    \    \"password\": \"myPassword\"\r
+
+    }"
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: "const responseText = pm.response.text();\r
+
+      \r
+
+      pm.test(\"Status code is 401\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      pm.test(\"Response message should empty\", function() {\r
+
+      \    pm.expect(responseText).to.be.empty\r
+
+      });"
+    language: text/javascript
+order: 10000

@@ -1,0 +1,40 @@
+$kind: http-request
+name: TC-UR-PATCH-007 Update with wrong DT "first name"
+url: "{{base_url}}/users/me"
+method: PATCH
+body:
+  type: json
+  content: '{"firstName": 1235}'
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: beforeRequest
+    code: "pm.environment.set(\"token\",
+      \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmYzEyYTkzYWY3MzAwMT\
+      U5NjU1YTEiLCJpYXQiOjE3NzYyNzE2NTh9.Y-jIQYGZqwUQNO1A_o5Oo24q6a8UYQQ2k_YGtl\
+      wVf4I\");\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "\r
+
+      \r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"message\");})\r
+
+      \r\n"
+    language: text/javascript
+order: 16000

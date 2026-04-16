@@ -1,0 +1,6 @@
+name: New Environment
+values:
+  - key: soon_to_be_deletet
+    value: ""
+    enabled: true
+color: null

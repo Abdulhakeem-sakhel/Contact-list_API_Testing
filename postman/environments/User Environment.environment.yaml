@@ -1,0 +1,33 @@
+name: User Environment
+values:
+  - key: base_url
+    value: ""
+    enabled: true
+  - key: token
+    value: ""
+    enabled: true
+  - key: firstName
+    value: ""
+    enabled: true
+  - key: lastName
+    value: ""
+    enabled: true
+  - key: email
+    value: ""
+    enabled: true
+  - key: TokenExpired
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZjRiYTkzYWY3MzAwMTU5NjU3MTMiLCJpYXQiOjE3NzYyODQ4NTh9.-yS5CSdfDsz5ma6Ja7adCiluKGU07d7-VwUqqdLmOU8
+    enabled: true
+  - key: invalid_token
+    value: ""
+    enabled: true
+  - key: tem_token
+    value: ""
+    enabled: true
+  - key: contactId
+    value: ""
+    enabled: true
+  - key: fakeid
+    value: ""
+    enabled: true
+color: 180

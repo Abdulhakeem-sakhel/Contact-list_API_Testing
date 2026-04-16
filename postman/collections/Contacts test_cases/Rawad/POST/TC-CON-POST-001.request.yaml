@@ -1,0 +1,72 @@
+$kind: http-request
+url: "{{base_url}}/contacts"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"John\",\r
+
+    \    \"lastName\": \"Doe\",\r
+
+    \    \"birthdate\": \"1970-01-01\",\r
+
+    \    \"email\": \"jdoe@fake.com\",\r
+
+    \    \"phone\": \"8005555555\",\r
+
+    \    \"street1\": \"1 Main St.\",\r
+
+    \    \"street2\": \"Apartment A\",\r
+
+    \    \"city\": \"Anytown\",\r
+
+    \    \"stateProvince\": \"KS\",\r
+
+    \    \"postalCode\": \"12345\",\r
+
+    \    \"country\": \"USA\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-POST-001 Scripts:\r
+
+      pm.environment.set(\"contactId\", pm.response.json().contactId);\r
+
+      pm.environment.set(\"firstName\", pm.response.json().firstName);\r
+
+      pm.environment.set(\"lastName\", pm.response.json().lastName);\r
+
+      pm.environment.set(\"email\", pm.response.json().email);\r
+
+      \r
+
+      pm.test(\"Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      pm.test(\"Response contains _id\", function(){\r
+
+      \    const jsonData=pm.response.json();\r
+
+      \    pm.expect(jsonData).to.have.property(\"_id\");\r
+
+      \    pm.environment.set(\"contactId\", jsonData._id);\r
+
+      });\r
+
+      pm.test(\"firstName matches submitted value\", function(){\r
+
+      \    pm.expect(pm.response.json().firstName).to.eql(pm.environment.get(\"\
+      firstName\"));\r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

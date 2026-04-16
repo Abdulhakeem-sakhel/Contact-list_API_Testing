@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{base_url}}/users"
+method: POST
+body:
+  type: json
+  content: "{\"firstName\": \"Test\",\r
+
+    \"lastName\": \"User\",\r
+
+    \ \"email\": \"test@18fake.com\",\r
+
+    \ \"password\": \"myPassword\"\r
+
+    \ }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "var jsonData=pm.response;\r
+
+      pm.environment.set('token', jsonData.token);\r
+
+      \r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);})\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"message\");})"
+    language: text/javascript
+order: 2000
