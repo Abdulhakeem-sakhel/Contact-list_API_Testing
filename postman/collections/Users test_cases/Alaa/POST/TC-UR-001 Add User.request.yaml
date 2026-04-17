@@ -34,16 +34,13 @@ scripts:
 
       \r
 
-      pm.test(\"response body firstName و lastName and email exists\", function
-      () {\r
+      pm.test(\"response body firstName و lastName and email exists\", function () {\r
 
       \     const jsonData=pm.response.json();\r
 
-      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\
-      \"));\r
+      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\"));\r
 
-      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\")\
-      );\r
+      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\"));\r
 
       \    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email\"));\r
 

@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{base_url}}/contacts/{{fakeid}}"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set('fakeid', '6085a221fcfc724056670000');
+    language: text/javascript
+  - type: afterResponse
+    code: "const responseText = pm.response.text();\r
+
+      \r
+
+      pm.test(\"Status code is 404\", function () {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response message should empty\", function() {\r
+
+      \    pm.expect(responseText).to.be.empty\r
+
+      });"
+    language: text/javascript
+order: 3000

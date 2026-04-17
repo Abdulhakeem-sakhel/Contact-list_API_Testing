@@ -9,10 +9,7 @@ scripts:
   - type: beforeRequest
     code: "\r
 
-      pm.environment.set('token',
-      \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmNGM5MDgyYjUyNjAwMT\
-      VkYzBmZWEiLCJpYXQiOjE3NzYyNDE4MDh9.aQquhLZOpQaXm8VDlcAR_nb6E5v8SNicOZRPyS\
-      bzpHI\");"
+      pm.environment.set('token', \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmNGM5MDgyYjUyNjAwMTVkYzBmZWEiLCJpYXQiOjE3NzYyNDE4MDh9.aQquhLZOpQaXm8VDlcAR_nb6E5v8SNicOZRPySbzpHI\");"
     language: text/javascript
   - type: afterResponse
     code: "pm.test(\"Status code is 200\", function () {\r
@@ -31,11 +28,9 @@ scripts:
 
       const rText = pm.response.text();\r
 
-      pm.test(\"Response message should mention firstName and lastName\",
-      function() {\r
+      pm.test(\"Response message should mention firstName and lastName\", function() {\r
 
-      \    pm.expect(rText).to.contain(\"firstName\").and.to.contain(\"email\");\
-      \r
+      \    pm.expect(rText).to.contain(\"firstName\").and.to.contain(\"email\");\r
 
       });\r
 

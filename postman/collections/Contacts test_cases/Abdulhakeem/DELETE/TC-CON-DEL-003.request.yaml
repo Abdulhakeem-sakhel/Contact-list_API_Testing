@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{base_url}}/contacts/{{fakeid}}"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set('fakeid', '6085a221fcfc7240566700003432434234324234234');
+    language: text/javascript
+  - type: afterResponse
+    code: "const res = pm.response.json()\r
+
+      \r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response have to have the wrong path values that we passed\", function() {\r
+
+      \    pm.expect(res.path).to.eql('_id');\r
+
+      \    pm.expect(res.value).to.eql(pm.environment.get('fakeid'));\r
+
+      });"
+    language: text/javascript
+order: 4000

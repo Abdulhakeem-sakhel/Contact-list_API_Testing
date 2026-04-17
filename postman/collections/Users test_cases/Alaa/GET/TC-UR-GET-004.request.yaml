@@ -1,0 +1,53 @@
+$kind: http-request
+url: "{{base_url}}/users/me"
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"Test\",\r
+
+    \    \"lastName\": \"User\",\r
+
+    \    \"email\": \"{{$randomEmail}}\",\r
+
+    \    \"password\": \"myPassword\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Response contains a user\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"_id\");})\r
+
+      \r
+
+      const rText = pm.response.text();\r
+
+      pm.test(\"Response message should mention firstName and lastName\", function() {\r
+
+      \    pm.expect(rText).to.contain(\"firstName\").and.to.contain(\"email\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is less than 900ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });"
+    language: text/javascript
+order: 4000

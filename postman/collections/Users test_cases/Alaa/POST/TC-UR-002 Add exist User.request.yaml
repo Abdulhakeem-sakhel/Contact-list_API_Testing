@@ -26,14 +26,16 @@ scripts:
 
       pm.test(\"Status code is 400\", function () {\r
 
-      \    pm.response.to.have.status(400);})\r
+      \    pm.response.to.have.status(400);});\r
 
       \r
 
-      pm.test(\"Response contains error message\", function(){\r
+      pm.test(\"Message is not empty\", function () {\r
 
-      \    const jData=pm.response.json();\r
+      \    const jData = pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"message\");})"
+      \    pm.expect(jData.message).to.be.a(\"string\").and.not.empty;\r
+
+      });"
     language: text/javascript
 order: 2000

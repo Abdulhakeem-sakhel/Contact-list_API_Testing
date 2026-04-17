@@ -1,0 +1,46 @@
+$kind: http-request
+url: "{{base_url}}/users/me"
+method: PATCH
+body:
+  type: json
+  content: "{\r
+
+    \    \"firstName\": \"Adham\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWUyNWVmZTIwNTY5MzAwMTUxZDFjMWEiLCJpYXQiOjE3NzY0NDMxMzR9.UVNVTWCS5x5-sEH2WEEoVaIzAbdu_4ag9JXuXn-E2o4');
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"Status code is 401\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"error\");\r
+
+      \    })\r
+
+      \    \r
+
+      const responseText = pm.response.text();\r
+
+      pm.test(\"Response message should mention Please authenticate\", function() {\r
+
+      \    pm.expect(responseText).to.contain('Please authenticate');\r
+
+      });"
+    language: text/javascript
+order: 9000

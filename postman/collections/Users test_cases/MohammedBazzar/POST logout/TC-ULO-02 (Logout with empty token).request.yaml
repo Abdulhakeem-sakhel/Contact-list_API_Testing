@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{base_url}}/users/logout"
+method: POST
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: ""
+scripts:
+  - type: afterResponse
+    code: "const bodyResponseText = pm.response.text(); \r
+
+      \r
+
+      pm.test(\"Status code is 401\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response message should mention Please authenticate\", function() {\r
+
+      \    pm.expect(bodyResponseText).to.contain('Please authenticate');\r
+
+      });"
+    language: text/javascript
+order: 2000

@@ -10,7 +10,15 @@ auth:
     token: "{{token}}"
 scripts:
   - type: afterResponse
-    code: "\r
+    code: "pm.test(\"Response body is correct\", function(){\r
+
+      \    pm.expect(pm.response.json().firstName).to.eql(\"Adam\");\r
+
+      \    pm.expect(pm.response.json().lastName).to.eql(\"2.9\");\r
+
+      \    pm.expect(pm.response.json().email).to.eql(\"webster_erdman66@yahoo.com\");\r
+
+      });\r
 
       \r
 
@@ -26,10 +34,11 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"_id\");})\r\n"
+      \    pm.expect(jData).to.have.property(\"_id\");})\r
+
+      \r\n"
     language: text/javascript
   - type: beforeRequest
-    code: pm.environment.set("token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY");
+    code: pm.environment.set("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY");
     language: text/javascript
 order: 1000

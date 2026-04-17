@@ -20,6 +20,18 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"error\");})"
+      \    pm.expect(jData).to.have.property(\"error\");\r
+
+      \    })\r
+
+      \    \r
+
+      const responseText = pm.response.text();\r
+
+      pm.test(\"Response message should mention Please authenticate\", function() {\r
+
+      \    pm.expect(responseText).to.contain('Please authenticate');\r
+
+      });"
     language: text/javascript
 order: 6000

@@ -3,8 +3,7 @@ url: "{{base_url}}/users"
 method: POST
 body:
   type: json
-  content: '{"firstName": "Test","lastName": " 😍  " ,"email":
-    "{{$randomEmail}}","password": "myPassword" }'
+  content: '{"firstName": "Test","lastName": " 😍  " ,"email": "{{$randomEmail}}","password": "myPassword" }'
 auth:
   type: bearer
   credentials:
@@ -27,16 +26,13 @@ scripts:
 
       \r
 
-      pm.test(\"response body firstName, lastName and email exists\", function
-      () {\r
+      pm.test(\"response body firstName, lastName and email exists\", function () {\r
 
       \     const jsonData=pm.response.json();\r
 
-      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\
-      \"));\r
+      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\"));\r
 
-      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\")\
-      );\r
+      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\"));\r
 
       \    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email\"));\r
 

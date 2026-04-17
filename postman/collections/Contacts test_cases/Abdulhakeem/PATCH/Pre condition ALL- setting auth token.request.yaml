@@ -1,0 +1,77 @@
+$kind: http-request
+name: "Pre condition ALL: setting auth token"
+url: "{{base_url}}/users"
+method: POST
+body:
+  type: json
+  content: "{{body}}"
+scripts:
+  - type: afterResponse
+    code: "// Get the body variable and parse it from a string back into an object\r
+
+      const requestBody = JSON.parse(pm.variables.get(\"body\"));\r
+
+      console.log(requestBody);\r
+
+      \r
+
+      const responseJson = pm.response.json();\r
+
+      const user = responseJson.user;\r
+
+      \r
+
+      // Set the environment token\r
+
+      pm.environment.set(\"token\", responseJson.token);\r
+
+      \r
+
+      pm.test(\"Status code is 201\", function () {\r
+
+      \  pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Verifying the response values match the body values\", function () {\r
+
+      \  pm.expect(user.firstName).to.eql(requestBody.firstName);\r
+
+      \  pm.expect(user.lastName).to.eql(requestBody.lastName);\r
+
+      \  // Using toLowerCase() on the email in case the API returns it normalized\r
+
+      \  pm.expect(user.email.toLowerCase()).to.eql(requestBody.email.toLowerCase());\r
+
+      });"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const randomFirstName = pm.variables.replaceIn(\"{{$randomFirstName}}\");\r
+
+      const randomLastName = pm.variables.replaceIn(\"{{$randomLastName}}\");\r
+
+      const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r
+
+      const randomPassword = pm.variables.replaceIn(\"{{$randomPassword}}\");\r
+
+      \r
+
+      let body = {\r
+
+      \  firstName: randomFirstName,\r
+
+      \  lastName: randomLastName,\r
+
+      \  email: randomEmail,\r
+
+      \  password: randomPassword,\r
+
+      };\r
+
+      \r
+
+      pm.variables.set(\"body\", JSON.stringify(body));"
+    language: text/javascript
+order: 1000

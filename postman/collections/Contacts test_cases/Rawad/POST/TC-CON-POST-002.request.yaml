@@ -32,11 +32,9 @@ scripts:
 
       \    const jsonData=pm.response.json();\r
 
-      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\
-      \"));\r
+      \    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\"));\r
 
-      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\")\
-      );\r
+      \    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\"));\r
 
       });\r\n"
     language: text/javascript

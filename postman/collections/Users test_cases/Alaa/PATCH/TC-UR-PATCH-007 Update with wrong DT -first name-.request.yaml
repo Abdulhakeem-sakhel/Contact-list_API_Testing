@@ -29,6 +29,22 @@ scripts:
 
       \    pm.expect(jData).to.have.property(\"message\");})\r
 
+      const rText = pm.response.text();\r
+
+      pm.test(\"Response message should mention ValidatorError and firstName\", function() {\r
+
+      \    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"firstName\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is less than 200ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });\r
+
       \r\n"
     language: text/javascript
 order: 7000

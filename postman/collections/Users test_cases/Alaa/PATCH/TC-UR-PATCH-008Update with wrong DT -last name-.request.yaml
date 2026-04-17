@@ -2,13 +2,20 @@ $kind: http-request
 name: TC-UR-PATCH-008Update with wrong DT "last name"
 url: "{{base_url}}/users/me"
 method: PATCH
+body:
+  type: json
+  content: '{"lastName": 2.9}'
 auth:
   type: bearer
   credentials:
     token: "{{token}}"
 scripts:
   - type: afterResponse
-    code: "pm.test(\"Status code is 400\", function () {\r
+    code: "\r
+
+      \r
+
+      pm.test(\"Status code is 400\", function () {\r
 
       \    pm.response.to.have.status(400);\r
 
@@ -20,6 +27,22 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"message\");})\r\n"
+      \    pm.expect(jData).to.have.property(\"message\");})\r
+
+      const rText = pm.response.text();\r
+
+      pm.test(\"Response message should mention ValidatorError and firstName\", function() {\r
+
+      \    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"firstName\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is less than 200ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });"
     language: text/javascript
 order: 8000

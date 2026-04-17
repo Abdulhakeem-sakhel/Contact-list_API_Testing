@@ -10,7 +10,7 @@ auth:
     token: "{{token}}"
 scripts:
   - type: beforeRequest
-    code: pm.environment.set("token", "invalidToken");
+    code: "pm.environment.set(\"token\", \"invalidToken\");\r\n"
     language: text/javascript
   - type: afterResponse
     code: "pm.test(\"Status code is 401\", function () {\r
@@ -19,12 +19,22 @@ scripts:
 
       });\r
 
+      pm.test(\"Response time is less than 900ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });\r
+
       \r
 
-      pm.test(\"Response contains error message\", function(){\r
+      const rText = pm.response.text();\r
 
-      \    const jData=pm.response.json();\r
+      pm.test(\"Response message should mention error message :Please authenticate.\", function() {\r
 
-      \    pm.expect(jData).to.have.property(\"error\");})"
+      \   \r
+
+      \    pm.expect(rText).to.contain(\"error\").and.to.contain(\"Please authenticate.\");\r
+
+      });\r\n"
     language: text/javascript
 order: 3000

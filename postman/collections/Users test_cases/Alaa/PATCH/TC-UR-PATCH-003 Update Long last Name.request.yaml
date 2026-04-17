@@ -22,10 +22,45 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"message\");})"
+      \    pm.expect(jData).to.have.property(\"message\");})\r
+
+      \r
+
+      \    \r
+
+      \r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains error message\", function(){\r
+
+      \    const jData=pm.response.json();\r
+
+      \    pm.expect(jData).to.have.property(\"message\");})\r
+
+      const rText = pm.response.text();\r
+
+      pm.test(\"Response message should mention ValidatorError and lastName\", function() {\r
+
+      \    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"lastName\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is less than 900ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });"
     language: text/javascript
   - type: beforeRequest
-    code: pm.environment.set("token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY");
+    code: pm.environment.set("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY");
     language: text/javascript
 order: 3000

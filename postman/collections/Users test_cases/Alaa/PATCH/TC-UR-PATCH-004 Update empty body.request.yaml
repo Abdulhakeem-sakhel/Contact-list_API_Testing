@@ -22,6 +22,16 @@ scripts:
 
       \    const jData=pm.response.json();\r
 
-      \    pm.expect(jData).to.have.property(\"_id\");})"
+      \    pm.expect(jData).to.have.property(\"_id\");})\r
+
+      \r
+
+      \r
+
+      pm.test(\"Response time is less than 900ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(900);\r
+
+      });"
     language: text/javascript
 order: 4000

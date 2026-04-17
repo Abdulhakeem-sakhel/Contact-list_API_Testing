@@ -19,9 +19,7 @@ scripts:
 
       \    const list = pm.response.json();\r
 
-      \    const found = list.some(c => c.firstName ===
-      pm.environment.get(\"firstName\") && c.lastName ===
-      pm.environment.get(\"lastName\"));\r
+      \    const found = list.some(c => c.firstName === pm.environment.get(\"firstName\") && c.lastName === pm.environment.get(\"lastName\"));\r
 
       \    pm.expect(found).to.be.true;\r
 

@@ -26,11 +26,9 @@ scripts:
 
       const rText = pm.response.text();\r
 
-      pm.test(\"Response message should mention ValidatorError and firstName\",
-      function() {\r
+      pm.test(\"Response message should mention ValidatorError and firstName\", function() {\r
 
-      \    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"fir\
-      stName\");\r
+      \    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"firstName\");\r
 
       });\r
 

@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{base_url}}/contacts"
+method: POST
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: "// TC-CON-POST-005\r
+
+      pm.test(\"Status code is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"contact was not created - no _id in response\", function(){\r
+
+      \    const jsonData=pm.response.json();\r
+
+      \    pm.expect(jsonData).to.not.have.property(\"_id\");\r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Response time is less than 1000ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(1000);\r
+
+      });"
+    language: text/javascript
+order: 6000

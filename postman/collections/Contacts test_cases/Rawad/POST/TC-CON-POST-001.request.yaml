@@ -34,7 +34,7 @@ auth:
     token: "{{token}}"
 scripts:
   - type: afterResponse
-    code: "// TC-CON-POST-001 Scripts:\r
+    code: "// TC-CON-POST-001 Scripts\r
 
       pm.environment.set(\"contactId\", pm.response.json().contactId);\r
 
@@ -64,8 +64,7 @@ scripts:
 
       pm.test(\"firstName matches submitted value\", function(){\r
 
-      \    pm.expect(pm.response.json().firstName).to.eql(pm.environment.get(\"\
-      firstName\"));\r
+      \    pm.expect(pm.response.json().firstName).to.eql(pm.environment.get(\"firstName\"));\r
 
       });\r\n"
     language: text/javascript
