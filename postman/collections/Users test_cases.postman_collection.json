@@ -1,0 +1,2689 @@
+{
+  "info": {
+    "_postman_id": "2245aac7-63e2-44e6-b0ca-931cb337ac60",
+    "name": "Users test_cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53959556"
+  },
+  "item": [
+    {
+      "name": "Alaa",
+      "item": [
+        {
+          "name": "POST",
+          "item": [
+            {
+              "name": "TC-UR-001 Add User",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "var jsondata = pm.response.json();\r",
+                      "pm.environment.set(\"token\",jsondata.token);\r",
+                      "\r",
+                      "pm.environment.set(\"firstName\", pm.response.json().firstName);\r",
+                      "pm.environment.set(\"lastName\", pm.response.json().lastName);\r",
+                      "pm.environment.set(\"email\", pm.response.json().email);\r",
+                      "\r",
+                      "pm.test(\"response body firstName و lastName and email exists\", function () {\r",
+                      "     const jsonData=pm.response.json();\r",
+                      "    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\"));\r",
+                      "    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\"));\r",
+                      "    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email\"));\r",
+                      " });\r",
+                      "\r",
+                      " pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"user\")})\r",
+                      "\r",
+                      " pm.test(\"Status code is 201\", function () {\r",
+                      "    pm.response.to.have.status(201);})\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"myPassword\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-002 Add exist User",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "var jsonData=pm.response;\r",
+                      "pm.environment.set('token', jsonData.token);\r",
+                      "\r",
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);});\r",
+                      "\r",
+                      "pm.test(\"Message is not empty\", function () {\r",
+                      "    const jData = pm.response.json();\r",
+                      "    pm.expect(jData.message).to.be.a(\"string\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"Test\",\r\n\"lastName\": \"User\",\r\n \"email\": \"test@18fake.com\",\r\n \"password\": \"myPassword\"\r\n }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-003 Add User- missing password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "var jsonData=pm.response;\r",
+                      "pm.environment.set('token', jsonData.token);\r",
+                      "\r",
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);})\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"message\");})\r",
+                      "\r",
+                      "const responseText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and password\", function() {\r",
+                      "    pm.expect(responseText).to.contain(\"ValidatorError\").and.to.contain(\"password\");\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"Test\",\r\n\"lastName\": \"User\",\r\n \"email\": \"test@88fake.com\"\r\n \r\n }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-004 Add User- Empty body",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);})\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"message\");})\r",
+                      "\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and firstName\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"firstName\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-005 Add User- Invalid email format",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);})\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"message\");})\r",
+                      "\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and email\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"email\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"Test\",\r\n\"lastName\": \"User\",\r\n \"email\": \"notanEmail\",\r\n \"password\":\"myPassword\"\r\n \r\n }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-006 Add User with complex info",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "var jsonData=pm.response;\r",
+                      "pm.environment.set('token', jsonData.token)\r",
+                      "\r",
+                      "\r",
+                      "pm.environment.set(\"firstName\", pm.response.json().firstName);\r",
+                      "pm.environment.set(\"lastName\", pm.response.json().lastName);\r",
+                      "pm.environment.set(\"email\", pm.response.json().email);\r",
+                      "\r",
+                      "pm.test(\"response body firstName, lastName and email exists and correct\", function () {\r",
+                      "     const jsonData=pm.response.json();\r",
+                      "    pm.expect(jsonData.firstName).to.eql(pm.environment.get(\"firstName\"));\r",
+                      "    pm.expect(jsonData.lastName).to.eql(pm.environment.get(\"lastName\"));\r",
+                      "    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email\"));\r",
+                      " });\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Status code is 201\", function () {\r",
+                      "    pm.response.to.have.status(201);\r",
+                      "});\r",
+                      "pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"user\");})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"Test\",\"lastName\": \" 😍  \" ,\"email\": \"{{$randomEmail}}\",\"password\": \"myPassword\" }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "GET",
+          "item": [
+            {
+              "name": "TC-UR-GET-001 GET valid User",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "pm.environment.set('token', \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmNGM5MDgyYjUyNjAwMTVkYzBmZWEiLCJpYXQiOjE3NzYyNDE4MDh9.aQquhLZOpQaXm8VDlcAR_nb6E5v8SNicOZRPySbzpHI\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.environment.set(\"firstName\", pm.response.json().firstName);\r",
+                      "pm.environment.set(\"lastName\", pm.response.json().lastName);\r",
+                      "pm.environment.set(\"email\", pm.response.json().email);\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"response body firstName, lastName and email are identical\", function () {\r",
+                      "     const jsonData=pm.response.json();\r",
+                      "    pm.expect(jsonData.firstName).to.eql(\"Adham\");\r",
+                      "    pm.expect(jsonData.lastName).to.eql(\"User\");\r",
+                      "    pm.expect(jsonData.email).to.eql(\"test@98fake.com\");\r",
+                      " });\r",
+                      "pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"_id\");})\r",
+                      "\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention firstName and lastName\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"firstName\").and.to.contain(\"email\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-GET-002 GET User-No Auth",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains Auth error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"error\");})\r",
+                      "   const rText=pm.response.text();\r",
+                      "    pm.expect(rText).to.contain(\"error\").and.to.contain(\"Please authenticate.\");\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-GET-003 GET User- Invalid token",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"token\", \"invalidToken\");\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});\r",
+                      "\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention error message :Please authenticate.\", function() {\r",
+                      "   \r",
+                      "    pm.expect(rText).to.contain(\"error\").and.to.contain(\"Please authenticate.\");\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-GET-004 GET User with body",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"_id\");})\r",
+                      "\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention firstName and lastName\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"firstName\").and.to.contain(\"email\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});\r",
+                      "\r",
+                      "pm.environment.set(\"firstName\", pm.response.json().firstName);\r",
+                      "pm.environment.set(\"lastName\", pm.response.json().lastName);\r",
+                      "pm.environment.set(\"email\", pm.response.json().email);\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Response body firstName, lastName and email are identical\", function () {\r",
+                      "     const jsonData=pm.response.json();\r",
+                      "    pm.expect(jsonData.firstName).to.eql(\"Test\");\r",
+                      "    pm.expect(jsonData.lastName).to.eql(\"User\");\r",
+                      "    pm.expect(jsonData.email).to.eql(\"carmelo.little42@gmail.com\");\r",
+                      " });"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWU0YmEyMTc1YWIwYzAwMTUxZjFkMjkiLCJpYXQiOjE3NzY1OTc1Mzd9.G-NphfCasSe_GDcbQTBzQBvMrusPwwUkywgJ8NR5Go0\");\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"myPassword\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "PATCH",
+          "item": [
+            {
+              "name": "TC-UR-PATCH-001 Update first Name field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Response body is correct\", function(){\r",
+                      "    pm.expect(pm.response.json().firstName).to.eql(\"Adam\");\r",
+                      "    pm.expect(pm.response.json().lastName).to.eql(\"2.9\");\r",
+                      "    pm.expect(pm.response.json().email).to.eql(\"webster_erdman66@yahoo.com\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"_id\");})\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n \"firstName\": \"Adam\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-002 Update short Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and Password\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"password\");\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n \"password\": \"m\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-003 Update Long last Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"message\");})\r",
+                      ";\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and lastName\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"lastName\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZmVmNzkzYWY3MzAwMTU5NjU3M2IiLCJpYXQiOjE3NzYyODc0Nzl9.IlIS4YHk1iflK_OEasJvuOgbsgZ4qbFFJJKJazRxqPY\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"lastName\": \"Smith---------------@WQ\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-004 Update empty body",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"_id\");})\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-005 Update with invalid field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body is correct\", function(){\r",
+                      "    pm.expect(pm.response.json().firstName).to.eql(\"Adam\");\r",
+                      "    pm.expect(pm.response.json().lastName).to.eql(\"2.9\");\r",
+                      "    pm.expect(pm.response.json().email).to.eql(\"webster_erdman66@yahoo.com\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains a user\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"_id\");\r",
+                      "    })\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 900ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"age\":20\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-006 Update with no auth",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"error\");\r",
+                      "    })\r",
+                      "    \r",
+                      "const responseText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(responseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"Adham\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-007 Update with wrong DT \"first name\"",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "\r",
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"message\");})\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and firstName\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"firstName\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 200ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": 122}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-008Update with wrong DT \"last name\"",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "\r",
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"message\");})\r",
+                      "const rText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention ValidatorError and firstName\", function() {\r",
+                      "    pm.expect(rText).to.contain(\"ValidatorError\").and.to.contain(\"firstName\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is less than 200ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"lastName\": 2.9}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-UR-PATCH-009 Update a user that don't exsit",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWUyNWVmZTIwNTY5MzAwMTUxZDFjMWEiLCJpYXQiOjE3NzY0NDMxMzR9.UVNVTWCS5x5-sEH2WEEoVaIzAbdu_4ag9JXuXn-E2o4');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response contains error message\", function(){\r",
+                      "    const jData=pm.response.json();\r",
+                      "    pm.expect(jData).to.have.property(\"error\");\r",
+                      "    })\r",
+                      "    \r",
+                      "const responseText = pm.response.text();\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(responseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"firstName\": \"Adham\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MohammedBazzar",
+      "item": [
+        {
+          "name": "POST logout",
+          "item": [
+            {
+              "name": "TC-ULO-01 (Logout with valid token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+                      "\r",
+                      "const postUserRequest = {\r",
+                      "  url: pm.environment.get(\"base_url\") + \"/users\",\r",
+                      "  method: 'POST',\r",
+                      "  header: {\r",
+                      "    'Content-Type': 'application/json'\r",
+                      "  },\r",
+                      "  body: {\r",
+                      "    mode: 'raw',\r",
+                      "    raw: JSON.stringify({\r",
+                      "        \"firstName\": \"Test\",\r",
+                      "        \"lastName\": \"User\",\r",
+                      "        \"email\": randomEmail,\r",
+                      "        \"password\": \"myPassword\"\r",
+                      "    })\r",
+                      "  }\r",
+                      "};\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(postUserRequest);\r",
+                      "    pm.environment.set('token', res.json().token);\r",
+                      "} catch (err) {\r",
+                      "    console.log(err);\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULO-02 (Logout with empty token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULO-03 (Logout with invalid token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set('invalid_token', 'abdcdd2421423');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{invalid_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULO-04 (Logout with expired token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{TokenExpired}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULO-05 (Logout with very long token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "6085a221fcfc7240566700003432434234324234234",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULO-06 (Logout with token having spaces)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZjczYTkzYWY3MzAwMTU5NjU3MTciLCJpYXQiOjE3NzYyODU0OTh9.QAw6fiJszlWLqcz37q   1OGB7   UhwPG  Hiyjo5lXSNn6b3Q",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULO-07 (Logout twice with same token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+                      "\r",
+                      "const postUserRequest = {\r",
+                      "  url: pm.environment.get(\"base_url\") + \"/users\",\r",
+                      "  method: 'POST',\r",
+                      "  header: {\r",
+                      "    'Content-Type': 'application/json'\r",
+                      "  },\r",
+                      "  body: {\r",
+                      "    mode: 'raw',\r",
+                      "    raw: JSON.stringify({\r",
+                      "        \"firstName\": \"Test\",\r",
+                      "        \"lastName\": \"User\",\r",
+                      "        \"email\": randomEmail,\r",
+                      "        \"password\": \"myPassword\"\r",
+                      "    })\r",
+                      "  }\r",
+                      "};\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(postUserRequest);\r",
+                      "    pm.environment.set('tem_token', res.json().token);\r",
+                      "} catch (err) {\r",
+                      "    console.log(err);\r",
+                      "}\r",
+                      "\r",
+                      "const logoutRequest = {\r",
+                      "    url: pm.environment.get(\"base_url\") + \"/users/logout\",\r",
+                      "    method: 'POST',\r",
+                      "    header: {\r",
+                      "        'Content-Type': 'application/json',\r",
+                      "        'Authorization': `Bearer ${pm.environment.get(\"tem_token\")}`,\r",
+                      "    },\r",
+                      "}\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(logoutRequest);\r",
+                      "    if (res.code == 200) {\r",
+                      "        console.log(\"logged out succ\")\r",
+                      "    } else {\r",
+                      "        console.error(\"lool\");\r",
+                      "    } \r",
+                      "} catch(err) {\r",
+                      "    console.log(\"err\")\r",
+                      "};"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{tem_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "POST Login",
+          "item": [
+            {
+              "name": "TC-ULI-01 (Login with valid email and password)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+                      "const randomPassword = pm.variables.replaceIn(\"{{$randomPassword}}\");\r",
+                      "\r",
+                      "\r",
+                      "let body = {\r",
+                      "    email: randomEmail,\r",
+                      "    password: randomPassword\r",
+                      "}\r",
+                      "pm.variables.set('body', JSON.stringify(body));\r",
+                      "\r",
+                      "const userJson = {\r",
+                      "    \"firstName\": \"Test\",\r",
+                      "    \"lastName\": \"User\",\r",
+                      "    \"email\": randomEmail,\r",
+                      "    \"password\": randomPassword\r",
+                      "}\r",
+                      "\r",
+                      "pm.variables.set('user_json', userJson);\r",
+                      "\r",
+                      "const postUserRequest = {\r",
+                      "  url: pm.environment.get(\"base_url\") + \"/users\",\r",
+                      "  method: 'POST',\r",
+                      "  header: {\r",
+                      "    'Content-Type': 'application/json'\r",
+                      "  },\r",
+                      "  body: {\r",
+                      "    mode: 'raw',\r",
+                      "    raw: JSON.stringify(userJson)\r",
+                      "  }\r",
+                      "};\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(postUserRequest);\r",
+                      "} catch (err) {\r",
+                      "    console.log(err);\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const userInfo = pm.response.json().user;\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Verify the response values\", function() {\r",
+                      "    pm.expect(userInfo.firstName).to.eql(pm.variables.get('user_json').firstName);\r",
+                      "    pm.expect(userInfo.lastName).to.eql(pm.variables.get('user_json').lastName);\r",
+                      "    pm.expect(userInfo.email).to.eql(pm.variables.get('user_json').email.toLowerCase());\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{body}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULI-02 (Login with incorrect password)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+                      "const randomPassword = pm.variables.replaceIn(\"{{$randomPassword}}\");\r",
+                      "\r",
+                      "\r",
+                      "let body = {\r",
+                      "    email: randomEmail,\r",
+                      "    password: 'not correct'\r",
+                      "}\r",
+                      "pm.variables.set('body', JSON.stringify(body));\r",
+                      "\r",
+                      "const userJson = {\r",
+                      "    \"firstName\": \"Test\",\r",
+                      "    \"lastName\": \"User\",\r",
+                      "    \"email\": randomEmail,\r",
+                      "    \"password\": randomPassword\r",
+                      "}\r",
+                      "\r",
+                      "\r",
+                      "const postUserRequest = {\r",
+                      "  url: pm.environment.get(\"base_url\") + \"/users\",\r",
+                      "  method: 'POST',\r",
+                      "  header: {\r",
+                      "    'Content-Type': 'application/json'\r",
+                      "  },\r",
+                      "  body: {\r",
+                      "    mode: 'raw',\r",
+                      "    raw: JSON.stringify(userJson)\r",
+                      "  }\r",
+                      "};\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(postUserRequest);\r",
+                      "} catch (err) {\r",
+                      "    console.log(err);\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{body}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULI-03 (Login with unregistered email)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"myPassword\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULI-04 (Login with empty email)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"\",\r\n    \"password\": \"myPassword\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULI-05 (Login with empty password)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"email_not_registered@yahoo.com\" ,\r\n    \"password\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULI-06 (Login with missing fields)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "DELETE",
+          "item": [
+            {
+              "name": "TC-ULD-01 (Delete with valid token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.be.empty\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+                      "\r",
+                      "const postUserRequest = {\r",
+                      "  url: pm.environment.get(\"base_url\") + \"/users\",\r",
+                      "  method: 'POST',\r",
+                      "  header: {\r",
+                      "    'Content-Type': 'application/json'\r",
+                      "  },\r",
+                      "  body: {\r",
+                      "    mode: 'raw',\r",
+                      "    raw: JSON.stringify({\r",
+                      "        \"firstName\": \"Test\",\r",
+                      "        \"lastName\": \"User\",\r",
+                      "        \"email\": randomEmail,\r",
+                      "        \"password\": \"myPassword\"\r",
+                      "    })\r",
+                      "  }\r",
+                      "};\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(postUserRequest);\r",
+                      "    pm.environment.set('token', res.json().token);\r",
+                      "} catch (err) {\r",
+                      "    console.log(err);\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULD-02 (Delete with empty token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULD-03 (Delete with invalid token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set('invalid_token', 'abdcdd2421423');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{invalid_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULD-04 (Delete with expired token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.contain('Please authenticate.')\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{TokenExpired}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULD-05 (Delete with very long token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "6085a221fcfc7240566700003432434234324234234",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULD-06 (Delete with token having spaces)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const bodyResponseText = pm.response.text(); \r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should mention Please authenticate\", function() {\r",
+                      "    pm.expect(bodyResponseText).to.contain('Please authenticate');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWRmZjczYTkzYWY3MzAwMTU5NjU3MTciLCJpYXQiOjE3NzYyODU0OTh9.QAw6fiJszlWLqcz37q   1OGB7   UhwPG  Hiyjo5lXSNn6b3Q",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-ULD-07 (Delete twice with same token)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const responseText = pm.response.text();\r",
+                      "\r",
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message should empty\", function() {\r",
+                      "    pm.expect(responseText).to.contain('Please authenticate.')\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomEmail = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+                      "\r",
+                      "const postUserRequest = {\r",
+                      "  url: pm.environment.get(\"base_url\") + \"/users\",\r",
+                      "  method: 'POST',\r",
+                      "  header: {\r",
+                      "    'Content-Type': 'application/json'\r",
+                      "  },\r",
+                      "  body: {\r",
+                      "    mode: 'raw',\r",
+                      "    raw: JSON.stringify({\r",
+                      "        \"firstName\": \"Test\",\r",
+                      "        \"lastName\": \"User\",\r",
+                      "        \"email\": randomEmail,\r",
+                      "        \"password\": \"myPassword\"\r",
+                      "    })\r",
+                      "  }\r",
+                      "};\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(postUserRequest);\r",
+                      "    pm.environment.set('tem_token', res.json().token);\r",
+                      "} catch (err) {\r",
+                      "    console.log(err);\r",
+                      "}\r",
+                      "\r",
+                      "const deleteRequest = {\r",
+                      "    url: pm.environment.get(\"base_url\") + \"/users/me\",\r",
+                      "    method: 'DELETE',\r",
+                      "    header: {\r",
+                      "        'Content-Type': 'application/json',\r",
+                      "        'Authorization': `Bearer ${pm.environment.get(\"tem_token\")}`,\r",
+                      "    },\r",
+                      "}\r",
+                      "\r",
+                      "try {\r",
+                      "    const res = await pm.sendRequest(deleteRequest);\r",
+                      "    if (res.code == 200) {\r",
+                      "        console.log(\"logged out succ\")\r",
+                      "    } else {\r",
+                      "        console.error(\"lool\");\r",
+                      "    } \r",
+                      "} catch(err) {\r",
+                      "    console.log(\"err\")\r",
+                      "};"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{tem_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
