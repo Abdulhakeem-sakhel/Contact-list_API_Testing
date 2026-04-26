@@ -44,7 +44,6 @@ This project validates the functionality, security, and performance of a Contact
 | **HTTP Methods** | POST, GET, PATCH, DELETE |
 | **Auth Types** | Bearer token, no-auth, invalid/expired tokens |
 | **Negative Tests** | Missing fields, invalid data types, malformed payloads, unauthorized access |
-| **Performance** | Response time validation (<200ms to <1000ms) |
 
 ---
 
